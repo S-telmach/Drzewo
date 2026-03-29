@@ -524,6 +524,31 @@ svg.tree-svg {
 <div class="toast" id="toast"></div>
 
 <script>
+  // PIN LOCK
+(function() {
+  const CORRECT = '6789';
+  const stored = sessionStorage.getItem('pin_ok');
+  if (stored === '1') return;
+  document.body.innerHTML = `
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:#f5f0e8;font-family:'IBM Plex Mono',monospace;gap:16px;">
+      <div style="font-family:'Playfair Display',serif;font-size:28px;font-style:italic;color:#8b3a1a;">Drzewo Genealogiczne</div>
+      <div style="font-size:12px;color:#7a6a52;letter-spacing:2px;text-transform:uppercase;">Wprowadź PIN</div>
+      <input id="pinInput" type="password" inputmode="numeric" maxlength="4" autofocus
+        style="font-size:28px;letter-spacing:12px;width:140px;text-align:center;padding:12px;border:1px solid #c8b89a;border-radius:8px;background:#faf7f2;color:#2a1f0e;outline:none;">
+      <div id="pinErr" style="color:#8b3a1a;font-size:12px;min-height:16px;"></div>
+    </div>`;
+  document.getElementById('pinInput').addEventListener('input', function() {
+    if (this.value.length === 4) {
+      if (this.value === CORRECT) {
+        sessionStorage.setItem('pin_ok', '1');
+        location.reload();
+      } else {
+        document.getElementById('pinErr').textContent = 'Błędny PIN';
+        this.value = '';
+      }
+    }
+  });
+})();
 // ============================================================
 // GEDCOM PARSER
 // ============================================================
